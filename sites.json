@@ -1,0 +1,14 @@
+{
+  "defaultSite": "alex-sam",
+  "sites": {
+    "alex-sam": {
+      "name1": "Alex",
+      "name2": "Sam",
+      "startDate": "2025-01-01T00:00:00+08:00",
+      "motto": "把平凡的日子，过成一起喜欢的样子。",
+      "hosts": [],
+      "relationshipData": "./data/alex-sam.json",
+      "commentsEnabled": false
+    }
+  }
+}

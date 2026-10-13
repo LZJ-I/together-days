@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="robots" content="noindex, nofollow">
+    <title>评论配置 · 恋爱计时器</title><link rel="icon" href="../assets/favicon.svg" type="image/svg+xml"><link href="./admin.css?v=2" rel="stylesheet"><script type="module" src="./comments-setup.mjs?v=1"></script>
+</head>
+<body>
+    <header class="admin-header"><a class="admin-brand" href="./"><span class="brand-heart" aria-hidden="true">♡</span><span>把日子记下来<small>评论配置说明</small></span></a><a class="text-link" href="./">返回后台 ↗</a></header>
+    <main class="admin-main setup-main"><article class="editor-card setup-card">
+        <p class="eyebrow">为这些温柔的话，留一个安心的位置</p><h1>开启加密评论</h1><p>继续使用当前 GitHub 仓库和 Vercel 项目，不需要新增数据库。现有的管理密码、会话密钥和 GitHub 令牌保持原值。</p>
+        <h2>1. 核对 GitHub 令牌</h2><p>在 GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens 中，找到 Vercel 的 GITHUB_TOKEN 所对应的令牌。Repository access 仅选择网站仓库，Repository permissions 中的 <strong>Contents 设为 Read and write</strong>。如果原来已能保存记录，一般无需再增加权限。</p>
+        <h2>2. 确认评论数据分支</h2><p>评论单独保存在 <strong>comments-data</strong> 分支。该分支的 vercel.json 禁止自动部署；请勿合并进 main，也不要在 Vercel 中手动部署该分支。</p>
+        <h2>3. 添加评论密钥</h2><p>在 Vercel 项目的 Settings → Environment Variables 中，为 Production 添加下面两项：</p>
+        <dl class="setup-variables"><dt>COMMENTS_BRANCH</dt><dd>comments-data</dd><dt>COMMENT_ENCRYPTION_KEY</dt><dd>使用下方生成的独立随机密钥。</dd></dl>
+        <div class="setup-key"><label class="field"><span>新的评论密钥 · 只在当前浏览器中生成</span><input id="generated-comment-key" type="text" readonly spellcheck="false" autocomplete="off" aria-label="生成的评论加密密钥" placeholder="点击下方按钮生成"></label><div class="setup-key-actions"><button id="generate-comment-key" class="button secondary" type="button">生成新密钥</button><button id="copy-comment-key" class="button primary" type="button" disabled>复制密钥</button></div><p id="comment-key-status" class="section-note" role="status">生成的密钥不会发送到服务器，刷新本页后会清空。</p></div>
+        <p><strong>请先备份密钥。</strong>存入评论后，保留同一个密钥；更换或丢失它会使旧评论无法解密，也会影响原来的留言限制。它与登录会话密钥用途不同。</p>
+        <p>也可以在本地终端生成：</p><pre class="setup-command">node -e "console.log(require('node:crypto').randomBytes(32).toString('base64url'))"</pre>
+        <h2>4. 部署后验证</h2><p>保存环境变量后重新部署 Production。在后台为对应情侣开启评论区，提交一条测试留言；刷新后应显示已留言。在「评论管理」中删除后，主页不再显示，留言限制仍保留。需要重新测试时，可单独点击「允许再次留言」。</p>
+        <a class="button secondary" href="./">返回管理后台</a>
+    </article></main><footer class="admin-footer">慢慢记录，认真相爱。</footer>
+</body>
+</html>

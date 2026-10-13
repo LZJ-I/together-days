@@ -1,0 +1,15 @@
+@font-face {
+    font-family: "Dancing Script";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("./fonts/dancing-script-400.ttf?v=2") format("truetype");
+}
+
+@font-face {
+    font-family: "Dancing Script";
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url("./fonts/dancing-script-700.ttf?v=2") format("truetype");
+}

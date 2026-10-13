@@ -1,0 +1,21 @@
+{
+  "timeZone": "Asia/Shanghai",
+  "locations": {
+    "person1": "上海",
+    "person2": "杭州"
+  },
+  "distanceKm": 180,
+  "longDistancePeriods": [
+    {
+      "startAt": "2025-06-01T09:00:00+08:00",
+      "endAt": null
+    }
+  ],
+  "meetings": [
+    {
+      "startDate": "2025-06-07T10:00:00+08:00",
+      "endDate": "2025-06-08T18:00:00+08:00",
+      "title": "示例：一起度过的周末"
+    }
+  ]
+}

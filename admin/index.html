@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>记录管理 · 恋爱计时器</title>
+    <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+    <link href="./admin.css?v=2" rel="stylesheet">
+    <script src="../assets/luxon.min.js"></script>
+    <script type="module" src="./admin.mjs?v=4"></script>
+</head>
+<body>
+    <header class="admin-header">
+        <a class="admin-brand" href="../"><span class="brand-heart" aria-hidden="true">♡</span><span>把日子记下来<small>我们的记录管理</small></span></a>
+        <a id="home-link" class="text-link" href="../">查看主页 <span aria-hidden="true">↗</span></a>
+    </header>
+    <main class="admin-main">
+        <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+        <section id="loading-panel" class="login-card"><p>正在读取管理后台…</p></section>
+        <section id="login-panel" class="login-card" aria-labelledby="login-title" hidden>
+            <span class="login-heart" aria-hidden="true">♡</span>
+            <p class="eyebrow">每一次见面，都值得记住</p>
+            <h1 id="login-title">欢迎回来</h1>
+            <p id="login-description" class="muted">输入管理密码，继续记录你们的故事。</p>
+            <form id="login-form">
+                <label class="field"><span>管理密码</span><input id="password" type="password" autocomplete="current-password" required maxlength="512" placeholder="请输入管理密码"></label>
+                <button id="login-button" class="button primary" type="submit">登录管理后台</button>
+            </form>
+            <div id="setup-note" class="setup-note" hidden>
+                <p>请在当前 Vercel 项目的 Production 环境检查管理密码、会话密钥及 GitHub 仓库配置，保存后重新部署。</p>
+                <a class="text-link" href="./setup.html" target="_blank" rel="noopener">查看配置说明 ↗</a>
+            </div>
+            <button id="retry-button" class="button ghost" type="button" hidden>重新连接</button>
+        </section>
+
+        <section id="workspace" hidden>
+            <div class="workspace-heading">
+                <div><p class="eyebrow">留住那些一起度过的日子</p><h1>记录管理</h1><p class="muted">每对情侣独立配置，保存后更新对应的主页。</p></div>
+                <button id="logout-button" class="button ghost" type="button">退出登录</button>
+            </div>
+            <div class="site-bar">
+                <label class="field site-field"><span>当前管理的情侣</span><select id="site-select" aria-label="选择要管理的情侣"></select></label>
+                <span id="site-badge" class="badge"></span>
+                <div class="site-actions"><button id="create-site-button" class="button secondary small" type="button">＋ 新增情侣</button><button id="delete-site-button" class="button ghost small danger-text" type="button">删除页面</button></div>
+                <p id="site-scope" class="muted"></p>
+            </div>
+            <nav class="workspace-tabs" aria-label="管理内容"><button id="records-tab" class="workspace-tab is-active" type="button" aria-pressed="true">页面与记录</button><button id="comments-tab" class="workspace-tab" type="button" aria-pressed="false">评论管理 <span id="admin-comment-count"></span></button></nav>
+            <div id="records-panel">
+            <form id="editor-form">
+                <fieldset id="editor-fields">
+                    <div class="editor-layout">
+                        <div class="editor-sections">
+                            <section class="editor-card" aria-labelledby="page-settings-title">
+                                <div class="card-heading"><div><p class="eyebrow">01 · 你们的故事</p><h2 id="page-settings-title">情侣页面</h2></div><span id="page-id-badge" class="page-id-badge"></span></div>
+                                <div class="fields two-columns">
+                                    <label class="field"><span>第一个名字</span><input id="name1" type="text" maxlength="40" required></label>
+                                    <label class="field"><span>第二个名字</span><input id="name2" type="text" maxlength="40" required></label>
+                                </div>
+                                <label class="field note-field"><span>恋爱开始时间</span><input id="couple-start" type="datetime-local" step="60" required></label>
+                                <label class="field note-field"><span>页面文案</span><textarea id="couple-motto" rows="2" maxlength="300" placeholder="写一句属于你们的话"></textarea></label>
+                                <label class="field note-field"><span>访问域名 · 可留空，每行一个</span><textarea id="couple-hosts" rows="2" placeholder="例如：love.example.com"></textarea></label>
+                                <p class="section-note field-help">填写域名前，请先在 Vercel 和 DNS 中完成绑定。没有独立域名，也可以使用页面链接。</p>
+                                <label class="toggle-row comment-toggle"><input id="comments-enabled" type="checkbox" role="switch"><span><strong>开启评论区</strong><small>访客可以留下一次祝福，你可以在「评论管理」中删除。</small></span></label>
+                            </section>
+                            <section class="editor-card" aria-labelledby="settings-title">
+                                <div class="card-heading"><div><p class="eyebrow">02 · 两地的我们</p><h2 id="settings-title">展示与地点</h2></div></div>
+                                <label class="toggle-row"><input id="enabled" type="checkbox" role="switch"><span><strong>显示异地与见面记录</strong><small>只控制当前这对情侣，关闭后仍保留已填写的记录。</small></span></label>
+                                <div class="fields two-columns">
+                                    <label class="field"><span id="location1-label">第一个人的地点</span><input id="location1" type="text" maxlength="60" placeholder="例如：上海"></label>
+                                    <label class="field"><span id="location2-label">第二个人的地点</span><input id="location2" type="text" maxlength="60" placeholder="例如：杭州"></label>
+                                    <label class="field"><span>两地距离 · km</span><input id="distance-km" type="number" min="0" max="100000" step="any" placeholder="不填写则不显示距离"></label>
+                                    <label class="field"><span>记录时区</span><input id="time-zone" type="text" list="time-zones" required maxlength="60" autocomplete="off"><datalist id="time-zones"><option value="Asia/Shanghai">北京时间</option><option value="Asia/Tokyo">东京时间</option><option value="Europe/London">伦敦时间</option><option value="America/New_York">纽约时间</option><option value="UTC">协调世界时</option></datalist></label>
+                                </div>
+                            </section>
+
+                            <section class="editor-card" aria-labelledby="periods-title">
+                                <div class="card-heading"><div><p class="eyebrow">03 · 想念的时间</p><h2 id="periods-title">异地时间</h2></div><button id="add-period" class="button secondary small" type="button">＋ 添加阶段</button></div>
+                                <p class="section-note">开始时算第 1 天，每满 24 小时加一天。结束时间留空表示持续至今，时间按上方时区填写。</p>
+                                <div id="periods" class="record-list"></div>
+                                <p id="periods-empty" class="empty-note">还没有异地时间，可以从第一天开始记录。</p>
+                            </section>
+
+                            <section class="editor-card" aria-labelledby="meetings-title">
+                                <div class="card-heading"><div><p class="eyebrow">04 · 见面的日子</p><h2 id="meetings-title">见面记录</h2></div><button id="add-meeting" class="button secondary small" type="button">＋ 添加记录</button></div>
+                                <p class="section-note">开始、结束时间可输入到分钟，按上方时区填写。结束时间留空表示单日；跨日首尾都计入，重叠日期只累计一次，未来见面显示为计划。</p>
+                                <div id="meetings" class="record-list"></div>
+                                <p id="meetings-empty" class="empty-note">把下一次见面，留在这里。</p>
+                            </section>
+                        </div>
+                        <aside class="preview-card" aria-labelledby="preview-title">
+                            <p class="eyebrow">这些日子，正在被记下</p><h2 id="preview-title">配置预览</h2>
+                            <p id="preview-people" class="preview-people"></p>
+                            <div class="preview-route"><span id="preview-location1">地点待记录</span><span id="preview-distance">♡</span><span id="preview-location2">地点待记录</span></div>
+                            <div class="preview-stat"><span>异地的第</span><p><strong id="preview-distance-days">—</strong> 天</p></div>
+                            <div class="preview-stat"><span>累计见面</span><p><strong id="preview-meeting-days">0</strong> 天</p></div>
+                            <p id="preview-count" class="section-note">还没有见面记录</p>
+                            <p id="preview-state" class="preview-state"></p>
+                            <p class="section-note privacy-note">地点、距离和见面备注会展示在主页，请填写愿意公开的内容。</p>
+                        </aside>
+                    </div>
+                </fieldset>
+                <div class="save-bar">
+                    <span id="save-state" class="save-state" role="status">已读取最新配置</span>
+                    <div class="save-actions"><button id="export-button" class="button ghost" type="button">导出记录</button><button id="reload-button" class="button secondary" type="button">重新读取</button><button id="save-button" class="button primary" type="submit" disabled>保存修改</button></div>
+                </div>
+            </form>
+            <p id="save-result" class="save-result" role="status" hidden></p>
+            </div>
+            <section id="admin-comments-panel" class="editor-card admin-comments-panel" aria-labelledby="admin-comments-title" hidden>
+                <div class="card-heading"><div><p class="eyebrow">留在故事里的温柔</p><h2 id="admin-comments-title">收到的评论</h2></div><button id="reload-comments" class="button secondary small" type="button">重新读取</button></div>
+                <div class="admin-comments-toolbar"><p id="admin-comments-summary" class="section-note">正在读取评论…</p><label class="field"><span class="sr-only">筛选评论</span><select id="comments-filter"><option value="active">正在展示</option><option value="deleted">已删除</option><option value="all">全部评论</option></select></label></div>
+                <p class="section-note">删除后主页不再展示，默认仍保留一次留言限制。「允许再次留言」会单独解除这一条评论的限制。</p>
+                <a class="text-link comment-setup-link" href="./comments-setup.html" target="_blank" rel="noopener">评论配置说明 ↗</a>
+                <p id="admin-comments-notice" class="notice comments-admin-notice" role="status" hidden></p>
+                <p id="admin-comments-empty" class="empty-note" hidden>还没有收到评论，慢慢等一份祝福。</p>
+                <div id="admin-comments-list" class="admin-comments-list"></div>
+                <p class="section-note comments-storage-note">评论加密保存在 GitHub，只有后台和公开评论接口会解密。删除后，Git 历史仍保留旧的密文版本。</p>
+            </section>
+        </section>
+    </main>
+    <footer class="admin-footer">慢慢记录，认真相爱。</footer>
+    <noscript><p class="notice">请启用 JavaScript 后使用管理后台。</p></noscript>
+
+    <dialog id="create-site-dialog" class="site-dialog" aria-labelledby="create-site-title">
+        <form id="create-site-form"><div class="card-heading"><div><p class="eyebrow">新的一页，新的故事</p><h2 id="create-site-title">新增情侣页面</h2></div><button class="dialog-close" type="button" data-close-dialog="create-site-dialog" aria-label="关闭">×</button></div>
+            <p id="create-site-notice" class="notice" role="status" hidden></p>
+            <fieldset id="create-site-fields"><div class="fields two-columns"><label class="field"><span>第一个名字</span><input id="new-name1" type="text" maxlength="40" required placeholder="例如：Alex"></label><label class="field"><span>第二个名字</span><input id="new-name2" type="text" maxlength="40" required placeholder="例如：Sam"></label></div>
+                <label class="field note-field"><span>页面标识 · 创建后固定</span><input id="new-site-id" type="text" maxlength="64" pattern="[a-z0-9]+(-[a-z0-9]+)*" required placeholder="例如：xiaoming-xiaohong" autocapitalize="none" spellcheck="false"></label><p class="section-note field-help">使用小写字母、数字和短横线，将用于页面访问链接。</p>
+                <label class="field note-field"><span>恋爱开始时间 · 北京时间</span><input id="new-couple-start" type="datetime-local" step="60" required></label>
+                <label class="field note-field"><span>页面文案 · 可留空</span><textarea id="new-couple-motto" rows="2" maxlength="300" placeholder="写一句属于你们的话"></textarea></label>
+                <label class="field note-field"><span>访问域名 · 可留空，每行一个</span><textarea id="new-couple-hosts" rows="2" placeholder="例如：love.example.com"></textarea></label>
+                <label class="toggle-row comment-toggle"><input id="new-comments-enabled" type="checkbox" checked><span><strong>开启评论区</strong><small>给朋友们留一个送上祝福的地方。</small></span></label>
+                <label class="toggle-row"><input id="new-relationship-enabled" type="checkbox"><span><strong>显示异地与见面记录</strong><small>创建后可以继续填写地点、距离和见面时间。</small></span></label>
+            </fieldset>
+            <div class="dialog-actions"><button class="button secondary" type="button" data-close-dialog="create-site-dialog">取消</button><button id="confirm-create-site" class="button primary" type="submit">创建页面</button></div>
+        </form>
+    </dialog>
+    <dialog id="delete-site-dialog" class="site-dialog" aria-labelledby="delete-site-title">
+        <form id="delete-site-form"><div class="card-heading"><div><p class="eyebrow">为这页故事留一份备份</p><h2 id="delete-site-title">删除情侣页面</h2></div><button class="dialog-close" type="button" data-close-dialog="delete-site-dialog" aria-label="关闭">×</button></div>
+            <p id="delete-site-description" class="section-note"></p><p class="section-note">页面及评论接口将关闭，记录会归档在仓库中，已有评论保留加密备份。</p>
+            <p id="delete-site-notice" class="notice" role="status" hidden></p>
+            <fieldset id="delete-site-fields"><label id="replacement-default-field" class="field note-field" hidden><span>选择新的默认页面</span><select id="replacement-default"></select></label><label class="field note-field"><span>输入页面标识，确认删除</span><input id="delete-site-confirmation" type="text" required autocomplete="off" spellcheck="false"></label></fieldset>
+            <div class="dialog-actions"><button class="button secondary" type="button" data-close-dialog="delete-site-dialog">取消</button><button id="confirm-delete-site" class="button danger" type="submit">确认删除</button></div>
+        </form>
+    </dialog>
+
+    <template id="period-template">
+        <article class="record-row period-row">
+            <div class="record-heading"><h3>异地阶段</h3><button class="remove-record" type="button" aria-label="移除这一段异地时间">移除</button></div>
+            <div class="fields two-columns"><label class="field"><span>开始时间</span><input data-field="startAt" type="datetime-local" step="1" required></label><label class="field"><span>结束时间 · 可留空</span><input data-field="endAt" type="datetime-local" step="1"></label></div>
+        </article>
+    </template>
+    <template id="meeting-template">
+        <article class="record-row meeting-row">
+            <div class="record-heading"><h3>见面记录</h3><button class="remove-record" type="button" aria-label="移除这条见面记录">移除</button></div>
+            <div class="fields two-columns"><label class="field"><span>开始日期时间</span><input data-field="startDate" type="datetime-local" step="60" required></label><label class="field"><span>结束日期时间 · 单日可留空</span><input data-field="endDate" type="datetime-local" step="60"></label></div>
+            <label class="field note-field"><span>见面备注 · 可留空</span><input data-field="title" type="text" maxlength="200" placeholder="例如：一起过周末"></label>
+        </article>
+    </template>
+</body>
+</html>

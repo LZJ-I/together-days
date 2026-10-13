@@ -1,0 +1,185 @@
+@import "../assets/fonts.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+    .text-shadow {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    .heart-beat {
+        animation: heartbeat 1.5s ease-in-out infinite;
+    }
+    .float {
+        animation: float 3s ease-in-out infinite;
+    }
+    .meteor {
+        position: absolute;
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.8) 50%, rgba(255, 255, 255, 0) 100%);
+        border-radius: 50%;
+        transform-origin: top right;
+        animation: meteor 3s linear infinite;
+    }
+    .mode-indicator {
+        animation: pulse 2s infinite;
+    }
+    .time-unit {
+        white-space: nowrap;
+        flex: none;
+        box-sizing: border-box;
+        overflow: hidden;
+        min-width: 4.5rem;
+    }
+    .time-unit > div:first-child {
+        font-variant-numeric: tabular-nums;
+        font-feature-settings: "tnum" 1;
+        font-kerning: none;
+        min-width: 2ch;
+        min-height: 1.15em;
+    }
+    .time-unit-wide {
+        min-width: 0;
+    }
+    .time-unit-wide > div:first-child {
+        display: block;
+        overflow: hidden;
+        font-kerning: none;
+        font-variant-numeric: tabular-nums;
+        font-feature-settings: "tnum" 1;
+    }
+    .digit-tick {
+        animation: digit-tick 0.32s ease;
+    }
+}
+
+html.is-ready .page-bg {
+    animation: fade-in 0.65s ease both;
+}
+
+html.is-ready .page-main {
+    animation: page-enter 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.timer-stage {
+    display: grid;
+    align-items: center;
+    min-width: 0;
+}
+
+.timer-stage > .timer-mode {
+    grid-area: 1 / 1;
+    min-width: 0;
+    width: 100%;
+}
+
+/* Keep every mode in the same grid cell so wrapped rows reserve equal height. */
+.timer-stage > .timer-mode.hidden {
+    display: flex;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.time-unit-wide {
+    max-width: 100%;
+}
+
+.timer-mode:not(.hidden) {
+    animation: mode-in 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes heartbeat {
+    0% { transform: scale(1); }
+    14% { transform: scale(1.1); }
+    28% { transform: scale(1); }
+    42% { transform: scale(1.1); }
+    70% { transform: scale(1); }
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes meteor {
+    0% {
+        width: 0;
+        height: 2px;
+        transform: rotate(-30deg) translateX(0);
+        opacity: 1;
+    }
+    70% {
+        opacity: 1;
+    }
+    100% {
+        width: 150px;
+        height: 2px;
+        transform: rotate(-30deg) translateX(-1000px);
+        opacity: 0;
+    }
+}
+
+@keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes page-enter {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes mode-in {
+    from {
+        opacity: 0;
+        transform: scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes digit-tick {
+    0%, 100% { opacity: 1; }
+    40% { opacity: 0.72; }
+}
+
+@media (min-width: 768px) {
+    .time-unit {
+        min-width: 5.75rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .time-unit {
+        min-width: 6.5rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html.is-ready .page-bg,
+    html.is-ready .page-main,
+    .timer-mode:not(.hidden),
+    .digit-tick,
+    .heart-beat,
+    .float,
+    .meteor,
+    .mode-indicator,
+    .loader-heart {
+        animation: none !important;
+    }
+}

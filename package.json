@@ -1,0 +1,42 @@
+{
+  "name": "together-days",
+  "version": "1.0.0",
+  "description": "A personal relationship timeline with meeting calendars, encrypted guestbook, and a simple admin panel.",
+  "scripts": {
+    "build:css": "tailwindcss -i styles/input.css -o assets/styles.css --minify",
+    "build:calendar": "node scripts/build-calendar.mjs",
+    "build:static": "node scripts/build-static.mjs",
+    "build": "npm run build:css && npm run build:calendar && npm run build:static",
+    "test": "node tests/relationship-data.test.mjs && node tests/admin.test.mjs && node tests/comments.test.mjs && node tests/sites.test.mjs",
+    "dev": "node --env-file-if-exists=.env.local scripts/dev-server.mjs",
+    "preview:comments": "node scripts/preview-comments.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LZJ-I/together-days.git"
+  },
+  "keywords": [
+    "love",
+    "relationship",
+    "anniversary",
+    "calendar",
+    "guestbook",
+    "vercel",
+    "template"
+  ],
+  "author": "LZJ-I and contributors",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/LZJ-I/together-days/issues"
+  },
+  "homepage": "https://github.com/LZJ-I/together-days#readme",
+  "devDependencies": {
+    "esbuild": "0.25.12",
+    "tailwindcss": "^3.4.17"
+  },
+  "dependencies": {
+    "echarts": "6.0.0",
+    "luxon": "^3.7.2"
+  }
+}

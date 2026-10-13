@@ -1,0 +1,114 @@
+.relationship-story[hidden], .relationship-story [hidden], .story-route[hidden] { display: none; }
+
+body.has-relationship {
+    overflow-x: hidden;
+    overflow-y: auto;
+    justify-content: flex-start;
+    padding: 32px 20px 24px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+.has-relationship .page-main { max-width: 1000px; margin-block: auto; }
+.has-relationship #timerDesc { font-size: 14px; font-weight: 500; letter-spacing: .035em; }
+.has-relationship footer { font-family: inherit; font-size: 12px; font-style: normal; line-height: 1.8; }
+.relationship-story { margin-top: 20px; color: #72536b; text-align: left; }
+.story-route { display: grid; grid-template-columns: 1fr 130px 1fr; align-items: center; gap: 12px 20px; margin-top: 20px; padding-top: 20px; border-top: 1px solid #ead5e3; color: #72536b; text-align: left; }
+.story-place { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.story-place:first-child { align-items: flex-end; }
+.story-person { font-size: 12px; letter-spacing: .1em; color: #77516c; }
+.story-city { font-size: 23px; font-weight: 600; letter-spacing: .06em; overflow-wrap: anywhere; }
+.story-connection { display: flex; align-items: center; gap: 12px; }
+.story-route-center { display: flex; flex-direction: column; align-items: center; gap: 5px; flex-shrink: 0; }
+.story-route-distance { color: #79536d; font-size: 12px; line-height: 1.4; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.story-route-line { flex: 1; border-top: 1px dashed #bb8bab; }
+.story-route-heart { color: #b15b88; font-size: 26px; line-height: 1; }
+.story-route-caption { grid-column: 1 / -1; text-align: center; font-size: 12px; line-height: 1.9; color: #79536d; letter-spacing: .08em; text-wrap: balance; }
+.story-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.story-stat { padding: 22px 25px 20px; border: 1px solid #f1ddea; border-radius: 20px; box-shadow: 0 8px 28px #61365008; }
+.story-stat-distance { background: linear-gradient(135deg, #fff8fcf2, #f3eaf6e6); }
+.story-stat-meetings { background: linear-gradient(135deg, #fffafcf2, #fbeaf1e6); }
+.story-stat-heading { display: flex; align-items: center; gap: 8px; }
+.story-stat-heading h2 { font-size: 14px; font-weight: 500; letter-spacing: .035em; }
+.story-stat-icon { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 8px; background: #eddbe970; color: #9c668e; font-size: 18px; }
+.story-stat-meetings .story-stat-icon { background: #f6dce770; color: #b86a8d; }
+.story-stat-value { display: flex; align-items: baseline; gap: 10px; margin: 12px 0 7px; }
+.story-stat-value strong { font-size: clamp(2.4rem, 5vw, 3.4rem); line-height: 1.12; font-weight: 600; letter-spacing: -.045em; color: #8c5080; font-variant-numeric: tabular-nums; }
+.story-stat-meetings .story-stat-value strong { color: #b35f85; }
+.story-stat-value > span { color: #a18699; font-size: 12px; }
+.story-clock, .story-meeting-message { min-height: 20px; font-size: 12px; color: #87677e; font-variant-numeric: tabular-nums; }
+.story-stat-note { margin-top: 10px; font-size: 11px; line-height: 1.7; color: #87677e; }
+.story-calendar-card { margin-top: 20px; padding: 24px 26px 18px; border: 1px solid #eddde8; border-radius: 20px; background: #fffafded; box-shadow: 0 8px 28px #61365008; }
+.story-calendar-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
+.story-eyebrow { margin-bottom: 6px; font-size: 11px; letter-spacing: .14em; color: #87677e; }
+.story-calendar-heading h2 { font-size: 19px; line-height: 1.4; font-weight: 600; letter-spacing: .02em; color: #79536d; }
+.story-calendar-controls { display: flex; align-items: center; gap: 8px; }
+.story-button, .story-year-label select { height: 34px; border: 1px solid #e9d6e3; border-radius: 9px; background: #ffffffa6; color: #8b617c; font-family: inherit; font-size: 12px; }
+.story-button { padding: 0 12px; cursor: pointer; }
+.story-button:disabled { opacity: .45; cursor: default; }
+.story-year-label select { padding: 0 8px; min-width: 92px; cursor: pointer; }
+.story-button:not(:disabled):hover, .story-year-label select:hover { background: #f9eef5; }
+.relationship-story :focus-visible { outline: 2px solid #b377a0; outline-offset: 4px; }
+.story-calendar-scroll { max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: thin; scrollbar-color: #dec8d8 transparent; border-radius: 6px; }
+.story-calendar { width: 100%; min-width: 800px; height: 152px; }
+.story-calendar-unavailable { display: grid; place-items: center; font-size: 12px; }
+.story-calendar-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-top: 9px; }
+.story-calendar-summary { font-size: 11px; color: #87677e; }
+.story-legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: 11px; color: #87677e; }
+.story-legend > span { display: inline-flex; align-items: center; gap: 5px; }
+.story-legend i { display: inline-block; width: 9px; height: 9px; border-radius: 2px; }
+.legend-empty { background: #eadfe8; }
+.legend-met { background: #c56896; }
+.legend-planned { background: #e8c7dc; border: 1px solid #d3a4c1; }
+.legend-future { background: #f6eff5; border: 1px solid #eee4ed; }
+.story-day-detail { margin-top: 19px; padding: 13px 15px; border-radius: 11px; background: #f5edf480; border: 1px solid #ede1eb; }
+.story-day-heading { color: #805d74; font-size: 12px; font-weight: 500; }
+.story-day-heading.is-met { color: #b35b87; }
+.story-day-note { margin-top: 5px; font-size: 11px; line-height: 1.7; color: #87677e; overflow-wrap: anywhere; white-space: pre-wrap; }
+.story-history { margin-top: 16px; border-top: 1px solid #eee1ea; }
+.story-history summary { display: flex; align-items: center; gap: 8px; padding-top: 15px; font-size: 12px; cursor: pointer; list-style: none; }
+.story-history summary::-webkit-details-marker { display: none; }
+.story-history summary::before { content: '+'; color: #af819e; font-size: 16px; line-height: 1; }
+.story-history[open] summary::before { content: '−'; }
+.story-history summary > span { margin-left: auto; font-size: 10px; color: #aa91a1; }
+.story-record { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 0; border-bottom: 1px solid #f2e8ef; }
+.story-record:last-child { border: 0; padding-bottom: 1px; }
+.story-record > div { min-width: 0; }
+.story-record-date { font-size: 11px; line-height: 1.8; color: #92758a; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.story-record-title { margin-top: 4px; font-size: 12px; color: #815c73; white-space: pre-wrap; overflow-wrap: anywhere; }
+.story-record-status { flex-shrink: 0; font-size: 10px; padding: 4px 8px; border-radius: 6px; background: #f5eaf2; color: #a07992; }
+.story-error { margin-top: 14px; font-size: 12px; line-height: 1.8; color: #a8687b; }
+.story-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+@media (max-width: 600px) {
+    body.has-relationship { padding: 25px 16px 20px; }
+    .relationship-story { margin-top: 13px; }
+    .story-route { grid-template-columns: 1fr 94px 1fr; margin-top: 17px; padding-top: 17px; gap: 12px; }
+    .story-city { font-size: 21px; }
+    .story-route-caption { font-size: 11px; }
+    .story-stats { gap: 11px; }
+    .story-stat { padding: 16px 15px 14px; border-radius: 16px; }
+    .story-stat-heading { gap: 6px; }
+    .story-stat-heading h2 { font-size: 12px; }
+    .has-relationship #timerDesc { font-size: 12px; }
+    .story-stat-icon { width: 22px; height: 22px; font-size: 16px; border-radius: 7px; }
+    .story-stat-value { gap: 7px; margin-top: 12px; }
+    .story-stat-value strong { font-size: 38px; }
+    .story-clock, .story-meeting-message { font-size: 11px; line-height: 1.8; }
+    .story-stat-note { font-size: 10px; }
+    .story-calendar-card { margin-top: 13px; padding: 19px 16px 16px; border-radius: 16px; }
+    .story-calendar-heading { gap: 10px; margin-bottom: 17px; }
+    .story-calendar-heading h2 { font-size: 16px; }
+    .story-eyebrow { font-size: 10px; letter-spacing: .07em; }
+    .story-calendar-controls { gap: 5px; }
+    .story-button { padding-inline: 8px; }
+    .story-year-label select { min-width: 82px; padding-inline: 5px; }
+    .story-calendar-footer { gap: 10px; }
+    .story-legend { gap: 11px; }
+    .story-day-detail { margin-top: 15px; }
+    .story-record { gap: 10px; }
+    .story-record-status { padding-inline: 6px; }
+}
+@media (max-width: 350px) {
+    .story-stats { grid-template-columns: 1fr; }
+    .story-calendar-heading { align-items: flex-start; flex-direction: column; }
+    .story-calendar-controls { align-self: flex-end; }
+}

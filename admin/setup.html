@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>后台配置说明 · 恋爱计时器</title>
+    <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+    <link href="./admin.css?v=1" rel="stylesheet">
+</head>
+<body>
+    <header class="admin-header"><a class="admin-brand" href="./"><span class="brand-heart" aria-hidden="true">♡</span><span>记录管理<small>一次配置，随时记录</small></span></a><a class="text-link" href="./">返回后台 ↗</a></header>
+    <main class="admin-main setup-main">
+        <section class="editor-card setup-card">
+            <p class="eyebrow">部署配置</p><h1>让后台开始工作</h1>
+            <p class="section-note">页面由静态文件展示，登录与保存由同一 Vercel 项目的接口处理。记录保存到 GitHub 仓库，提交后沿用该仓库的自动部署。</p>
+            <h2>1. 准备仓库令牌</h2>
+            <p>在 GitHub 创建一个 fine-grained personal access token，仅选择这个网站的仓库，将 <strong>Contents</strong> 权限设为 <strong>Read and write</strong>。目标分支需要允许该账号直接提交。</p>
+            <p><a class="text-link" href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">前往 GitHub 创建令牌 ↗</a></p>
+            <h2>2. 添加 Vercel 环境变量</h2>
+            <p>进入项目的 Settings → Environment Variables，在 Production 中添加以下配置：</p>
+            <dl class="setup-variables">
+                <dt>ADMIN_PASSWORD</dt><dd>自行设置的管理密码，至少 12 个字符。</dd>
+                <dt>ADMIN_SESSION_SECRET</dt><dd>至少 32 个字符的随机会话密钥。可以在本地运行下方命令生成。</dd>
+                <dt>GITHUB_TOKEN</dt><dd>刚创建的 GitHub 仓库令牌。</dd>
+                <dt>GITHUB_REPOSITORY</dt><dd>仓库的「所有者/名称」，例如 your-name/your-repository。</dd>
+                <dt>GITHUB_BRANCH</dt><dd>需要保存和部署的分支，默认 main；使用其他分支时填写。</dd>
+            </dl>
+            <pre class="setup-command">node -e "console.log(require('node:crypto').randomBytes(32).toString('base64url'))"</pre>
+            <p class="section-note">密码、密钥和令牌只填写在环境变量中。</p>
+            <h2>3. 重新部署并登录</h2>
+            <p>代码部署到 Vercel 后，重新部署以使环境变量生效，再打开 /admin/ 输入管理密码。默认仅 Alex/Sam 开启异地与见面记录，可在后台为其他情侣单独开启。</p>
+            <p>保存后会生成一笔 GitHub 提交；主页在对应的 Vercel 部署完成后更新。</p>
+            <a class="button primary" href="./">前往管理后台</a>
+        </section>
+    </main>
+    <footer class="admin-footer">慢慢记录，认真相爱。</footer>
+</body>
+</html>
